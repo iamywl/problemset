@@ -1,0 +1,22 @@
+# Java 컴파일 바이너리
+*.class
+*.jar
+*.war
+*.ear
+bin/
+
+# Python 캐시 파일
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# IDE 설정 및 임시 파일
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# 로그 및 시스템 파일
+*.log
