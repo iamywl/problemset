@@ -1,0 +1,21 @@
+10
+5
+banana banana banana banana banana
+4
+kiwi orange grape melon
+6
+beta alpha gamma beta alpha gamma
+8
+network algorithm database algorithm network database algorithm security
+10
+z a b c a z a b c a
+12
+red blue green red blue red yellow green blue purple red cyan
+9
+sun moon star sun earth star moon sun moon
+10
+data structure stack queue tree graph hash heap sort search
+14
+cat caterpillar cat dog dog puppy kitten cat dog bird fish cat dog cat
+15
+java python java cpp python rust go swift java python kotlin typescript java rust python

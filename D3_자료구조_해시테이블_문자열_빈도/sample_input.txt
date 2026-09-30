@@ -1,0 +1,5 @@
+2
+7
+apple banana apple cherry banana apple date
+6
+dog cat zebra cat dog fox

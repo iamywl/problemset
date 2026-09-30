@@ -1,0 +1,21 @@
+10
+6 5
+R O P F E V
+7 2
+J G E M H A I
+8 4
+G Q J B A E Z H
+6 2
+E X I N O V
+5 2
+I V O K R
+7 3
+I K F C M J V
+5 2
+Y C A E J
+8 2
+A C T K J H O E
+5 5
+U N T R S
+8 3
+X Q D F Y T O L
