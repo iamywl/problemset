@@ -29,10 +29,21 @@
    - **D4 (심화 및 복합 제약 - 116문제)**: 2~3개 이상의 까다로운 복합 제약조건과 최적화($O(N)$ 모노톤, 비트마스크, 매개변수 탐색 등)가 유기적으로 결합된 고난도 문제.
    - **D5 (삼성 SW 역량테스트 Professional / B형 - 8문제)**: 대규모 데이터, 비트마스킹 DP, 롤백(Undo) 유니온파인드, K번째 최단경로, No-STL 커스텀 자료구조 등 고도의 최적화 알고리즘 문제.
 
-4. **품질 보증 에이전트(qa_agent.py) 파이프라인**:
+4. **품질 보증 에이전트(qa_agent.py) 및 실시간 업로드 관리**:
    - `python qa_agent.py audit` : 31개 주제별 난이도 편향 및 결핍 실시간 전수 감사 (22개 핵심 주제 완벽 균형 달성)
    - `python qa_agent.py ladder [주제]` : 주제별 5단계 미세 사다리 및 난이도 계단식 편차 정밀 진단
    - `python qa_agent.py verify [경로/문제명]` : 개별 또는 전체 문제 12개 테스트케이스 100% PASS 검증
+   - `python qa_agent.py upload` (또는 `python agent.py upload`) : 358문항 실시간 업로드 현황 조회 (달성률, 완료/진행/대기)
+   - `python qa_agent.py upload --mark [문제] [완료/진행/대기] [--id SWEA번호]` : 문항 업로드 상태 즉시 마킹 및 엑셀 실시간 동기화
+
+5. **통합 엑셀 대시보드 및 연간 일정 연동 (2개 통합 문서)**:
+   - **[`SWEA_알고리즘_문제집_커리큘럼.xlsx`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/SWEA_알고리즘_문제집_커리큘럼.xlsx)** (총 6개 시트):
+     - `📊 대시보드_요약` : 358문항 KPI 카드, 31개 주제별 난이도 매트릭스, **실시간 업로드 진척도 집계 카드**
+     - `📅 SSAFY_강의연계_업로드_로드맵` : 김태희 강사 공식 강의 86클립(W06~W09)과 358제 생성 문제 1:1 매칭 및 업로드 관리
+     - `📋 전체_문제_목록` : 358문항 전수 DB 및 **인셀 드롭다운(DataValidation: ✅ 업로드 완료 / ⏳ 검토중 / ⬜ 대기) & 조건부 서식**
+     - `🪜 D2_사다리_징검다리`, `👶 D3_20인_스토리텔링`, `🏆 D4_D5_심화_Pro` : 시트별 맞춤 정렬 및 업로드 상태 추적
+   - **[`year/yearlySchedule.v2.10.xlsx`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/year/yearlySchedule.v2.10.xlsx)** :
+     - `06_SWEA_생성문제_358_업로드_DB` 시트 신설로 SSAFY 연간 일정 및 강의 로드맵과의 완벽한 1:1 연동 지원
 
 ---
 

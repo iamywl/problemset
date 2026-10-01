@@ -398,6 +398,134 @@ def verify_all():
     print("=" * 80)
 
 # ---------------------------------------------------------------------------
+# [기능 5] 문항별 업로드 상태 추적 및 엑셀 실시간 동기화 (Upload Management)
+# ---------------------------------------------------------------------------
+def audit_upload():
+    import openpyxl
+    xlsx_path = os.path.join(BASE_DIR, "SWEA_알고리즘_문제집_커리큘럼.xlsx")
+    if not os.path.exists(xlsx_path):
+        print(f"[ERROR] 엑셀 파일이 존재하지 않습니다: {xlsx_path}")
+        return
+
+    wb = openpyxl.load_workbook(xlsx_path, data_only=True)
+    if "📋 전체_문제_목록" not in wb.sheetnames:
+        print("[ERROR] '📋 전체_문제_목록' 시트가 없습니다.")
+        return
+
+    ws = wb["📋 전체_문제_목록"]
+    total = 0
+    done = 0
+    prog = 0
+    pending = 0
+    topic_stats = defaultdict(lambda: {"total": 0, "done": 0, "prog": 0, "pending": 0})
+
+    for row in range(2, ws.max_row + 1):
+        no = ws.cell(row, 1).value
+        if no is None:
+            continue
+        total += 1
+        topic = str(ws.cell(row, 2).value or '')
+        status = str(ws.cell(row, 5).value or '⬜ 대기')
+
+        topic_stats[topic]["total"] += 1
+        if "완료" in status:
+            done += 1
+            topic_stats[topic]["done"] += 1
+        elif "진행" in status or "검토" in status:
+            prog += 1
+            topic_stats[topic]["prog"] += 1
+        else:
+            pending += 1
+            topic_stats[topic]["pending"] += 1
+
+    rate = (done / total * 100) if total > 0 else 0.0
+
+    print("\n" + "=" * 80)
+    print(" 🚀 [QA Agent] 전체 358문항 업로드 현황 실시간 리포트")
+    print("=" * 80)
+    print(f" • 총 관리 대상 문항: {total}개")
+    print(f" • ✅ 업로드 완료:   {done}개 ({rate:.1f}%)")
+    print(f" • ⏳ 검토 및 진행중: {prog}개 ({(prog/total*100 if total else 0):.1f}%)")
+    print(f" • ⬜ 업로드 대기:   {pending}개 ({(pending/total*100 if total else 0):.1f}%)")
+    print("-" * 80)
+    print(f"{'주제 (Topic)':<18} | {'전체':>5} | {'완료':>5} | {'진행중':>6} | {'대기':>5} | {'달성률':>7}")
+    print("-" * 80)
+    for topic, st in sorted(topic_stats.items()):
+        t_tot = st["total"]
+        t_done = st["done"]
+        t_prog = st["prog"]
+        t_pend = st["pending"]
+        t_rate = (t_done / t_tot * 100) if t_tot else 0.0
+        print(f"{topic:<18} | {t_tot:5d} | {t_done:5d} | {t_prog:6d} | {t_pend:5d} | {t_rate:6.1f}%")
+    print("=" * 80)
+    print("💡 문항 상태 변경: python qa_agent.py upload --mark [문제경로/제목] [완료/진행/대기] [--id SWEA번호]")
+
+def mark_upload_status(target, status_input, swea_id=None, date_str=None, memo=None):
+    import openpyxl
+    import datetime
+
+    status_map = {
+        "완료": "✅ 업로드 완료",
+        "done": "✅ 업로드 완료",
+        "1": "✅ 업로드 완료",
+        "진행": "⏳ 검토중",
+        "진행중": "⏳ 검토중",
+        "검토": "⏳ 검토중",
+        "검토중": "⏳ 검토중",
+        "prog": "⏳ 검토중",
+        "2": "⏳ 검토중",
+        "대기": "⬜ 대기",
+        "미업로드": "⬜ 대기",
+        "0": "⬜ 대기"
+    }
+    status = status_map.get(status_input.lower(), status_input)
+    today = date_str or datetime.date.today().strftime("%Y-%m-%d")
+    target_clean = os.path.basename(target)
+
+    xlsx1 = os.path.join(BASE_DIR, "SWEA_알고리즘_문제집_커리큘럼.xlsx")
+    updated_1 = False
+    if os.path.exists(xlsx1):
+        wb1 = openpyxl.load_workbook(xlsx1)
+        if "📋 전체_문제_목록" in wb1.sheetnames:
+            ws = wb1["📋 전체_문제_목록"]
+            for r in range(2, ws.max_row + 1):
+                p_title = str(ws.cell(r, 4).value or '')
+                p_path = str(ws.cell(r, 11).value or '')
+                if target_clean in p_title or target_clean in p_path:
+                    ws.cell(r, 5, value=status)
+                    ws.cell(r, 6, value=today if "완료" in status else "-")
+                    if swea_id:
+                        ws.cell(r, 7, value=str(swea_id))
+                    if memo:
+                        ws.cell(r, 14, value=str(memo))
+                    updated_1 = True
+                    print(f" -> [커리큘럼 엑셀] '{p_title}' -> {status} 갱신 완료")
+        wb1.save(xlsx1)
+
+    xlsx2 = os.path.join(BASE_DIR, "year", "yearlySchedule.v2.10.xlsx")
+    updated_2 = False
+    if os.path.exists(xlsx2):
+        wb2 = openpyxl.load_workbook(xlsx2)
+        if "06_SWEA_생성문제_358_업로드_DB" in wb2.sheetnames:
+            ws = wb2["06_SWEA_생성문제_358_업로드_DB"]
+            for r in range(2, ws.max_row + 1):
+                p_title = str(ws.cell(r, 4).value or '')
+                p_path = str(ws.cell(r, 9).value or '')
+                if target_clean in p_title or target_clean in p_path:
+                    ws.cell(r, 5, value=status)
+                    ws.cell(r, 6, value=today if "완료" in status else "-")
+                    if swea_id:
+                        ws.cell(r, 7, value=str(swea_id))
+                    updated_2 = True
+                    print(f" -> [연간일정 엑셀] '{p_title}' -> {status} 갱신 완료")
+        wb2.save(xlsx2)
+
+    if updated_1 or updated_2:
+        print(f"🎉 '{target}'의 업로드 상태가 양쪽 엑셀 통합 문서에 실시간 반영되었습니다.")
+    else:
+        print(f"[WARNING] 대상 문제 '{target}'을(를) 엑셀에서 찾지 못했습니다.")
+
+# ---------------------------------------------------------------------------
 # 메인 CLI 엔트리포인트
 # ---------------------------------------------------------------------------
 def main():
@@ -416,6 +544,12 @@ def main():
     inspect_p = subparsers.add_parser("inspect", help="문제 텍스트 품질 검사")
     inspect_p.add_argument("target", help="검사 대상 문제 디렉토리명")
 
+    upload_p = subparsers.add_parser("upload", help="358문항 업로드 현황 조회 및 마킹")
+    upload_p.add_argument("--mark", nargs=2, metavar=("TARGET", "STATUS"), help="특정 문제의 업로드 상태 변경 (예: --mark 슬라이딩윈도우_뒤집기 완료)")
+    upload_p.add_argument("--id", default=None, help="SWEA 문제번호 또는 URL")
+    upload_p.add_argument("--date", default=None, help="업로드 일자 (YYYY-MM-DD)")
+    upload_p.add_argument("--memo", default=None, help="업로드 메모")
+
     args = parser.parse_args()
 
     if args.command == "audit":
@@ -431,6 +565,12 @@ def main():
     elif args.command == "inspect":
         ok, msg = inspect_problem_content(args.target)
         print(f"[{args.target}] 내용 품질: {'✅ 통과' if ok else '⚠️ 보완 필요'} ({msg})")
+    elif args.command == "upload":
+        if args.mark:
+            target, status = args.mark
+            mark_upload_status(target, status, args.id, args.date, args.memo)
+        else:
+            audit_upload()
     else:
         parser.print_help()
 

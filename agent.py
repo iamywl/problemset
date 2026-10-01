@@ -63,6 +63,7 @@
    - 하위 문제 디렉토리 자동 컴파일 및 채점 검증 (python agent.py test [문제폴더명] / --all)
    - 신규 문제 6종 규격 파일 자동 생성 및 Java 100% 검증 (python agent.py create)
    - 사용자 요구사항 명세 확인 (python agent.py spec)
+   - 엑셀 연동 문항별 실시간 업로드 현황 조회 및 마킹 (python agent.py upload / python qa_agent.py upload)
 =============================================================================
 """
 
@@ -141,6 +142,11 @@ USER_REQUIREMENTS_TEXT = """
 5. 테스트케이스 수량:
    - 샘플: 2개
    - 백그라운드 평가용: 10개
+
+6. 문항별 실시간 업로드 추적 관리 (Upload Tracking):
+   - 'SWEA_알고리즘_문제집_커리큘럼.xlsx' 및 'year/yearlySchedule.v2.10.xlsx' 연동
+   - 문항별 업로드 상태(드롭다운: ✅ 업로드 완료, ⏳ 검토중, ⬜ 대기), 일자, SWEA ID/URL 실시간 관리
+   - 터미널 명령어: python agent.py upload / python qa_agent.py upload
 =============================================================================
 """
 
@@ -662,6 +668,13 @@ def main():
     create_parser.add_argument("--difficulty", default="D4", help="난이도 (D1~D5, 기본값: D4)")
     create_parser.add_argument("--type", default="security_key", choices=["security_key"], help="문제 유형")
 
+    # 5. upload
+    upload_parser = subparsers.add_parser("upload", help="문항별 실시간 업로드 현황 조회 및 마킹")
+    upload_parser.add_argument("--mark", nargs=2, metavar=("TARGET", "STATUS"), help="특정 문제의 업로드 상태 변경 (예: --mark 슬라이딩윈도우_뒤집기 완료)")
+    upload_parser.add_argument("--id", default=None, help="SWEA 문제번호 또는 URL")
+    upload_parser.add_argument("--date", default=None, help="업로드 일자 (YYYY-MM-DD)")
+    upload_parser.add_argument("--memo", default=None, help="업로드 메모")
+
     args = parser.parse_args()
 
     if args.command == "spec":
@@ -679,6 +692,13 @@ def main():
             print("[ERROR] 채점할 문제 디렉토리명을 지정하거나 --all 옵션을 사용하세요.")
     elif args.command == "create":
         create_problem(args.title, args.difficulty, args.type)
+    elif args.command == "upload":
+        import qa_agent
+        if args.mark:
+            target, status = args.mark
+            qa_agent.mark_upload_status(target, status, args.id, args.date, args.memo)
+        else:
+            qa_agent.audit_upload()
 
 
 if __name__ == "__main__":
