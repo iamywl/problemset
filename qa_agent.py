@@ -201,7 +201,9 @@ def verify_problem(prob_dir_name, verbose=False):
         ["javac", "-encoding", "UTF-8", "Solution.java"],
         cwd=prob_dir,
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8",
+        errors="replace"
     )
     if comp.returncode != 0:
         return False, f"Java 컴파일 에러: {comp.stderr[:100]}"
@@ -217,7 +219,9 @@ def verify_problem(prob_dir_name, verbose=False):
         cwd=prob_dir,
         input=sample_in,
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8",
+        errors="replace"
     )
     if run_s.returncode != 0:
         cleanup_class(prob_dir)
@@ -239,7 +243,9 @@ def verify_problem(prob_dir_name, verbose=False):
         cwd=prob_dir,
         input=eval_in,
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8",
+        errors="replace"
     )
     cleanup_class(prob_dir)
 
