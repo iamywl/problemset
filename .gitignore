@@ -20,3 +20,8 @@ Thumbs.db
 
 # 로그 및 시스템 파일
 *.log
+
+# MS Office / 임시 락 및 백업 파일
+~$*
+*.tmp
+*.bak
