@@ -2,10 +2,9 @@
 =============================================================================
 [USER REQUIREMENTS SPECIFICATION - 사용자 요구사항 명세]
 =============================================================================
-1. 아키텍처 및 디렉토리 관리 구조:
-   - 최상위에 총괄 에이전트 파일(agent.py)이 단독으로 위치해야 한다.
-   - 모든 문제 디렉토리들은 반드시 agent.py 하위에서 생성되고 관리되어야 한다.
-   - 문제 생성 시마다 `[난이도]_[문제제목]` 형식으로 디렉토리를 생성해야 한다.
+1. 아키텍처 및 디렉토리 관리 구조 (주제별 계층화 표준):
+   - 최상위 루트에는 총괄 에이전트 파일(agent.py, qa_agent.py) 및 커리큘럼 문서가 위치한다.
+   - 모든 문제는 반드시 주제별 디렉토리(`[주제]/[난이도]_[주제]_[문제제목]`, 예: `슬라이딩윈도우/D2_슬라이딩윈도우_연속_온도_최대합`) 하위에서 생성되고 관리되어야 한다.
    - 각 문제 디렉토리 내부에는 오직 아래의 표준 6종 파일만 정갈하게 보관되어야 한다:
        1) 문제.txt (SWEA 표준 문제 설명, 제약사항, 입출력 포맷)
        2) sample_input.txt (샘플 입력 2개)
@@ -73,7 +72,13 @@ import glob
 import random
 import argparse
 import subprocess
-from collections import deque
+from collections import deque, defaultdict
+
+if sys.platform == "win32":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -181,16 +186,34 @@ def generate_base_grid(seed, n=16, loops=3):
 
 
 # ---------------------------------------------------------------------------
+# 유틸리티: 경로 탐색 모듈
+# ---------------------------------------------------------------------------
+def resolve_problem_path(prob_dir_name):
+    # 직접 경로 확인
+    p = os.path.join(BASE_DIR, prob_dir_name)
+    if os.path.isdir(p):
+        return p
+    # 주제별 하위 디렉토리 순회 검색
+    for entry in os.listdir(BASE_DIR):
+        tp = os.path.join(BASE_DIR, entry)
+        if os.path.isdir(tp) and not entry.startswith("."):
+            sub_p = os.path.join(tp, prob_dir_name)
+            if os.path.isdir(sub_p):
+                return sub_p
+    return None
+
+# ---------------------------------------------------------------------------
 # [기능 1] 문제 채점 및 검증 모듈
 # ---------------------------------------------------------------------------
 def test_problem(prob_dir_name):
-    prob_dir = os.path.join(BASE_DIR, prob_dir_name)
-    if not os.path.isdir(prob_dir):
-        print(f"[ERROR] 디렉토리를 찾을 수 없습니다: {prob_dir}")
+    prob_dir = resolve_problem_path(prob_dir_name)
+    if not prob_dir or not os.path.isdir(prob_dir):
+        print(f"[ERROR] 디렉토리를 찾을 수 없습니다: {prob_dir_name}")
         return False
 
     print("\n" + "=" * 70)
-    print(f" [채점 에이전트] 대상 문제: {prob_dir_name}")
+    print(f" [채점 에이전트] 대상 문제: {os.path.basename(prob_dir)}")
+    print(f" 위치: {prob_dir}")
     print("=" * 70)
 
     sol_java = os.path.join(prob_dir, "Solution.java")
@@ -268,35 +291,51 @@ def test_problem(prob_dir_name):
 
 
 # ---------------------------------------------------------------------------
-# [기능 2] 문제 디렉토리 목록 조회 모듈
+# [기능 2] 문제 디렉토리 목록 조회 모듈 (주제별 계층 구조 지원)
 # ---------------------------------------------------------------------------
 def list_problems():
-    print("=" * 75)
-    print(" [에이전트 관리 하위 문제 목록]")
+    from collections import defaultdict
+    print("=" * 80)
+    print(" [에이전트 관리 하위 문제 목록 - 주제별 계층 구조]")
     print(" 기준 경로: " + BASE_DIR)
-    print("=" * 75)
+    print("=" * 80)
 
-    entries = [d for d in os.listdir(BASE_DIR) if os.path.isdir(os.path.join(BASE_DIR, d))]
-    prob_dirs = [d for d in entries if d.startswith("D") and "_" in d]
+    topic_map = defaultdict(list)
+    total_count = 0
 
-    if not prob_dirs:
+    for entry in sorted(os.listdir(BASE_DIR)):
+        p = os.path.join(BASE_DIR, entry)
+        if not os.path.isdir(p) or entry.startswith(".") or entry.startswith("__"):
+            continue
+        # 루트에 직접 위치한 레거시 문제 폴더
+        if "_" in entry and entry.split("_")[0] in ["D1", "D2", "D3", "D4", "D5"]:
+            topic = entry.split("_")[1] if len(entry.split("_")) > 1 else "기타"
+            topic_map[topic].append((entry, p))
+            total_count += 1
+        else:
+            # 주제별 하위 폴더
+            for sub in sorted(os.listdir(p)):
+                sub_p = os.path.join(p, sub)
+                if os.path.isdir(sub_p) and "_" in sub and sub.split("_")[0] in ["D1", "D2", "D3", "D4", "D5"]:
+                    topic_map[entry].append((sub, sub_p))
+                    total_count += 1
+
+    if not topic_map:
         print("  현재 관리 중인 문제 디렉토리가 없습니다.")
         return
 
-    print(f"{'디렉토리명':<30} | {'규격 파일 완비 여부':<20} | {'제약조건'}")
-    print("-" * 75)
+    for topic in sorted(topic_map.keys()):
+        probs = topic_map[topic]
+        print(f"\n📂 [{topic}] (총 {len(probs)}문제)")
+        print(f"  {'문제 디렉토리명':<45} | {'규격 파일 완비 여부':<20} | {'제약조건'}")
+        print("  " + "-" * 75)
+        for name, p_path in probs:
+            missing = [rf for rf in REQUIRED_FILES if not os.path.exists(os.path.join(p_path, rf))]
+            status = "6종 파일 완비 [OK]" if not missing else f"누락 ({len(missing)}개)"
+            print(f"  {name:<45} | {status:<20} | Java 전용")
 
-    for p in sorted(prob_dirs):
-        p_path = os.path.join(BASE_DIR, p)
-        missing = [rf for rf in REQUIRED_FILES if not os.path.exists(os.path.join(p_path, rf))]
-        if not missing:
-            status = "6종 파일 완비 [OK]"
-        else:
-            status = f"누락 ({len(missing)}개)"
-        print(f"{p:<30} | {status:<20} | Java 전용")
-
-    print("-" * 75)
-    print(f"총 {len(prob_dirs)}개의 문제가 에이전트 하위에서 관리되고 있습니다.\n")
+    print("\n" + "=" * 80)
+    print(f"총 {total_count}개의 문제가 주제별 계층 구조 하위에서 관리되고 있습니다.\n")
 
 
 # ---------------------------------------------------------------------------

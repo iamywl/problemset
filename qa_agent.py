@@ -40,14 +40,35 @@ CHILDREN_NAMES = [
     "이서", "서아", "아윤", "지아", "하윤", "서윤", "시아", "아린", "나은", "유주"
 ]
 
+def resolve_problem_path(prob_dir_name):
+    # Direct path
+    p = os.path.join(BASE_DIR, prob_dir_name)
+    if os.path.isdir(p):
+        return p
+    # Check within topic directories
+    for entry in os.listdir(BASE_DIR):
+        tp = os.path.join(BASE_DIR, entry)
+        if os.path.isdir(tp) and not entry.startswith("."):
+            sub_p = os.path.join(tp, prob_dir_name)
+            if os.path.isdir(sub_p):
+                return sub_p
+    return None
+
 def get_all_problem_dirs():
     dirs = []
-    for d in os.listdir(BASE_DIR):
-        p = os.path.join(BASE_DIR, d)
-        if os.path.isdir(p) and not d.startswith(".") and "_" in d:
-            parts = d.split("_")
-            if parts[0] in ["D1", "D2", "D3", "D4", "D5"]:
-                dirs.append(d)
+    for entry in os.listdir(BASE_DIR):
+        p = os.path.join(BASE_DIR, entry)
+        if not os.path.isdir(p) or entry.startswith(".") or entry.startswith("__"):
+            continue
+        # Case 1: entry itself is a problem directory (legacy flat structure)
+        if "_" in entry and entry.split("_")[0] in ["D1", "D2", "D3", "D4", "D5"]:
+            dirs.append(entry)
+        else:
+            # Case 2: entry is a topic directory, search for problems under it
+            for sub in os.listdir(p):
+                sub_p = os.path.join(p, sub)
+                if os.path.isdir(sub_p) and "_" in sub and sub.split("_")[0] in ["D1", "D2", "D3", "D4", "D5"]:
+                    dirs.append(os.path.join(entry, sub).replace("\\", "/"))
     return sorted(dirs)
 
 # ---------------------------------------------------------------------------
@@ -58,7 +79,7 @@ def audit_distribution():
     topic_data = defaultdict(lambda: {"D2": [], "D3": [], "D4": [], "D5": [], "other": []})
 
     for d in dirs:
-        parts = d.split("_")
+        parts = os.path.basename(d).split("_")
         diff = parts[0]
         topic = parts[1] if len(parts) > 1 else "기타"
         if diff in topic_data[topic]:
@@ -141,7 +162,7 @@ def audit_ladder(target_topic=None):
     topic_data = defaultdict(lambda: {"D2": [], "D3": [], "D4": [], "D5": [], "other": []})
 
     for d in dirs:
-        parts = d.split("_")
+        parts = os.path.basename(d).split("_")
         diff = parts[0]
         topic = parts[1] if len(parts) > 1 else "기타"
         if diff in topic_data[topic]:
@@ -216,7 +237,9 @@ def audit_ladder(target_topic=None):
 # [기능 2] 문제 내용 품질 검사 (Inspect Content)
 # ---------------------------------------------------------------------------
 def inspect_problem_content(prob_dir_name):
-    prob_dir = os.path.join(BASE_DIR, prob_dir_name)
+    prob_dir = resolve_problem_path(prob_dir_name)
+    if not prob_dir or not os.path.isdir(prob_dir):
+        return False, "문제 디렉토리 없음"
     desc_path = os.path.join(prob_dir, "문제.txt")
     if not os.path.exists(desc_path):
         return False, "문제.txt 파일 없음"
@@ -224,7 +247,7 @@ def inspect_problem_content(prob_dir_name):
     with open(desc_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    parts = prob_dir_name.split("_")
+    parts = os.path.basename(prob_dir_name).split("_")
     diff = parts[0]
     issues = []
 
@@ -256,8 +279,8 @@ def inspect_problem_content(prob_dir_name):
 # [기능 3] 개별 문제 검증 및 채점 (Verify Single Problem)
 # ---------------------------------------------------------------------------
 def verify_problem(prob_dir_name, verbose=False):
-    prob_dir = os.path.join(BASE_DIR, prob_dir_name)
-    if not os.path.isdir(prob_dir):
+    prob_dir = resolve_problem_path(prob_dir_name)
+    if not prob_dir or not os.path.isdir(prob_dir):
         return False, "디렉토리 없음"
 
     # 1. 필수 6종 파일 검사
