@@ -1,0 +1,357 @@
+10
+43
+insert_at 15 106
+insert_front 806
+get_at 7
+get_at 7
+delete_at 1
+insert_at 5 620
+insert_front 159
+get_at 12
+insert_front 976
+insert_at 13 371
+insert_at 8 959
+insert_at 3 836
+size
+insert_at 5 553
+get_at 2
+get_at 13
+delete_at 7
+delete_at 6
+delete_at 6
+insert_front 3
+size
+size
+insert_front 743
+size
+size
+size
+size
+insert_at 7 703
+get_at 13
+delete_at 3
+insert_front 947
+size
+size
+size
+size
+delete_at 3
+delete_at 4
+insert_front 924
+delete_at 8
+insert_at 9 927
+insert_back 355
+get_at 14
+size
+28
+insert_back 992
+size
+insert_back 491
+insert_back 403
+size
+size
+delete_at 1
+size
+insert_back 804
+insert_back 263
+insert_front 105
+insert_back 39
+get_at 0
+insert_back 975
+get_at 11
+insert_at 9 18
+delete_at 9
+insert_front 869
+delete_at 4
+insert_at 9 55
+insert_back 517
+insert_back 890
+size
+insert_front 623
+get_at 2
+size
+delete_at 3
+size
+45
+size
+size
+insert_front 831
+insert_at 5 462
+insert_front 735
+get_at 4
+delete_at 2
+insert_back 922
+insert_at 2 897
+delete_at 7
+delete_at 8
+size
+delete_at 11
+delete_at 9
+insert_front 50
+delete_at 2
+insert_at 10 889
+insert_at 0 869
+insert_at 7 700
+get_at 8
+size
+size
+insert_at 11 509
+insert_front 621
+insert_front 126
+insert_front 924
+insert_front 963
+delete_at 4
+get_at 2
+get_at 14
+get_at 2
+delete_at 0
+get_at 6
+delete_at 5
+insert_back 217
+insert_back 466
+get_at 1
+insert_at 14 880
+delete_at 10
+get_at 5
+insert_back 949
+get_at 14
+get_at 7
+insert_front 977
+insert_back 706
+47
+size
+insert_at 9 926
+size
+get_at 0
+get_at 1
+insert_at 15 234
+delete_at 4
+size
+insert_at 2 980
+get_at 1
+size
+insert_at 15 840
+insert_front 25
+insert_front 853
+get_at 4
+get_at 7
+delete_at 15
+delete_at 12
+insert_front 338
+insert_back 521
+insert_at 3 429
+delete_at 2
+insert_front 71
+insert_back 459
+insert_back 442
+get_at 8
+size
+insert_at 7 557
+delete_at 5
+insert_at 11 553
+delete_at 7
+insert_front 162
+insert_back 889
+insert_front 530
+insert_back 806
+size
+delete_at 7
+insert_front 824
+insert_back 151
+size
+insert_back 458
+insert_at 2 450
+get_at 1
+insert_front 753
+size
+delete_at 8
+get_at 10
+22
+get_at 11
+delete_at 0
+insert_back 124
+insert_at 9 274
+insert_front 366
+size
+insert_at 6 791
+delete_at 9
+insert_at 9 194
+size
+insert_at 10 852
+insert_at 10 532
+insert_back 157
+insert_front 534
+insert_back 622
+insert_front 99
+get_at 4
+insert_front 315
+get_at 2
+insert_front 395
+insert_at 12 519
+insert_front 386
+20
+size
+get_at 8
+get_at 9
+insert_back 353
+insert_at 11 127
+size
+insert_front 101
+insert_at 9 867
+insert_front 947
+insert_front 482
+delete_at 5
+insert_back 236
+insert_at 7 109
+insert_at 12 280
+insert_at 2 781
+size
+insert_at 3 808
+insert_at 14 867
+insert_at 13 134
+delete_at 4
+38
+insert_back 133
+insert_at 12 888
+insert_front 387
+size
+size
+insert_front 231
+size
+insert_back 903
+delete_at 6
+insert_at 2 907
+get_at 15
+insert_back 497
+insert_front 562
+delete_at 1
+insert_at 0 31
+insert_at 15 380
+insert_back 835
+get_at 12
+delete_at 1
+delete_at 1
+insert_at 0 636
+insert_back 23
+insert_front 226
+insert_back 154
+size
+get_at 4
+size
+insert_at 3 885
+insert_back 591
+insert_front 839
+size
+insert_front 127
+insert_back 754
+insert_at 7 977
+size
+insert_at 6 681
+insert_at 8 808
+get_at 10
+50
+insert_back 59
+get_at 6
+insert_back 77
+delete_at 11
+insert_front 10
+insert_front 281
+delete_at 3
+get_at 15
+insert_back 491
+delete_at 9
+insert_at 0 899
+insert_front 455
+delete_at 8
+insert_front 160
+get_at 13
+delete_at 15
+delete_at 12
+insert_front 438
+insert_front 410
+delete_at 11
+delete_at 8
+get_at 4
+size
+insert_front 851
+delete_at 0
+get_at 6
+insert_at 12 276
+delete_at 5
+insert_at 8 761
+get_at 8
+size
+insert_at 13 504
+size
+insert_at 7 403
+size
+insert_front 142
+insert_front 529
+insert_front 334
+size
+get_at 7
+size
+insert_back 849
+delete_at 13
+get_at 4
+insert_back 967
+size
+insert_at 9 418
+insert_front 962
+size
+size
+27
+insert_at 3 663
+insert_front 103
+insert_front 168
+insert_front 597
+get_at 8
+delete_at 8
+delete_at 2
+get_at 14
+insert_front 608
+insert_at 14 77
+get_at 5
+insert_front 339
+insert_at 9 209
+size
+size
+size
+insert_at 13 279
+insert_at 13 250
+get_at 0
+size
+delete_at 10
+size
+delete_at 10
+size
+size
+delete_at 10
+insert_at 1 820
+26
+size
+insert_at 4 243
+insert_at 4 558
+get_at 14
+insert_front 486
+size
+insert_front 11
+insert_front 243
+insert_front 836
+insert_back 282
+delete_at 8
+insert_back 267
+insert_at 14 131
+get_at 5
+insert_front 140
+insert_front 400
+get_at 8
+insert_at 7 708
+insert_at 6 199
+insert_at 0 877
+insert_back 382
+size
+get_at 10
+insert_at 9 913
+insert_at 7 83
+delete_at 11

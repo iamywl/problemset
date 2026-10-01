@@ -1,0 +1,16 @@
+2
+8
+insert_back 10
+insert_front 20
+insert_at 1 30
+get_at 1
+size
+delete_at 1
+delete_at 5
+get_at 0
+5
+size
+insert_front 5
+get_at 0
+delete_at 0
+size
