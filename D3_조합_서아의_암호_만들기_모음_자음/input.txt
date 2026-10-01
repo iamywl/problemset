@@ -1,0 +1,21 @@
+10
+4 5
+a b c d e
+3 6
+a e i x y z
+4 6
+b c d f g a
+5 7
+a e b c d f g
+3 4
+a b c d
+4 7
+p q r s t u v
+5 8
+a b c d e f g h
+4 6
+k l m n o p
+3 5
+u v w x y
+4 7
+e f g h i j k
