@@ -1,0 +1,89 @@
+10
+10
+push 1
+push 2
+push 3
+top
+pop
+top
+pop
+top
+pop
+top
+4
+size
+empty
+top
+pop
+8
+push 100
+size
+top
+push 200
+size
+top
+pop
+pop
+5
+push 42
+empty
+pop
+empty
+size
+11
+push 7
+push 8
+push 9
+pop
+size
+push 10
+top
+pop
+pop
+pop
+pop
+6
+push 1
+pop
+push 2
+pop
+push 3
+pop
+9
+push 10
+push 20
+size
+empty
+top
+pop
+top
+pop
+empty
+6
+top
+pop
+push 99
+top
+pop
+top
+10
+push 50
+push 40
+push 30
+push 20
+push 10
+size
+pop
+pop
+pop
+size
+9
+push 11
+push 22
+top
+pop
+push 33
+top
+pop
+pop
+pop
