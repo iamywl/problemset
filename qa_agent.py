@@ -126,16 +126,82 @@ def audit_distribution():
     print(f" - 상위 3대 주제 점유율: {top3_ratio:.1f}% ({top3_count}/{len(dirs)}문제)")
     print(f" - 최다 편중 주제: 1위 [{sorted_by_count[0][0]}] ({sum(len(v) for v in sorted_by_count[0][1].values())}문제), 2위 [{sorted_by_count[1][0]}] ({sum(len(v) for v in sorted_by_count[1][1].values())}문제)")
 
-    print("\n⚠️ [규격 미달 및 보충 필요 영역 리포트 (D2/D3/D4 각 5문제 이상 & D2 개념 필수)]")
-    for item in deficient_topics:
-        needs = []
-        if item["need_d2"] > 0: needs.append(f"D2 +{item['need_d2']}문제")
-        if item["need_d3"] > 0: needs.append(f"D3 +{item['need_d3']}문제")
-        if item["need_d4"] > 0: needs.append(f"D4 +{item['need_d4']}문제")
-        if item["need_concept"]: needs.append("D2 '[주제]에_대해서' 개념문제 필수")
-        print(f" ▶ 주제 [{item['topic']}]: 현재 D2={item['D2']}, D3={item['D3']}, D4={item['D4']} => 보충 필요: {', '.join(needs)}")
+    print("\n💡 [난이도 계단식 조절(Ladder Progression) 및 증설 가이드]")
+    print(" - 난이도 조절이 급격해지는 것을 방지하기 위해 문항 수 증설을 공식 허용합니다.")
+    print(" - D2 내부: [개념 뼈대(~에_대해서)] -> [단순 기능 구현] -> [기초 조건 응용(징검다리)] 순으로 구성.")
+    print(" - 세부 주제별 계단식 구조 점검: 'python qa_agent.py ladder [주제]' 명령어 활용.")
 
     return deficient_topics
+
+# ---------------------------------------------------------------------------
+# [기능 1-2] 난이도 계단식 편차 진단 (Ladder Audit)
+# ---------------------------------------------------------------------------
+def audit_ladder(target_topic=None):
+    dirs = get_all_problem_dirs()
+    topic_data = defaultdict(lambda: {"D2": [], "D3": [], "D4": [], "D5": [], "other": []})
+
+    for d in dirs:
+        parts = d.split("_")
+        diff = parts[0]
+        topic = parts[1] if len(parts) > 1 else "기타"
+        if diff in topic_data[topic]:
+            topic_data[topic][diff].append(d)
+
+    print("\n" + "=" * 80)
+    print(" 🪜 [QA Agent] 주제별 계단식 난이도(Ladder Progression) 및 편차 진단")
+    print("=" * 80)
+
+    topics_to_check = [target_topic] if target_topic and target_topic in topic_data else sorted(topic_data.keys())
+
+    for topic in topics_to_check:
+        diffs = topic_data[topic]
+        c_d2 = len(diffs["D2"])
+        c_d3 = len(diffs["D3"])
+        c_d4 = len(diffs["D4"])
+        c_d5 = len(diffs["D5"])
+        tot = c_d2 + c_d3 + c_d4 + c_d5
+
+        # D2 개념 뼈대 문제
+        concept_probs = [d for d in diffs["D2"] if "에_대해서" in d or "에대해서" in d]
+        basic_d2 = [d for d in diffs["D2"] if d not in concept_probs]
+
+        print(f"\n📂 [{topic}] (총 {tot}문제: D2:{c_d2}, D3:{c_d3}, D4:{c_d4}, D5:{c_d5})")
+        print("  1. D2 기초 레벨 (개념 뼈대 & 직관적 기초):")
+        if concept_probs:
+            for p in concept_probs:
+                print(f"     [Lv.1 뼈대] {p} (동작원리/Trace/기본구현)")
+        else:
+            print("     ⚠️ [Lv.1 뼈대] '...에_대해서' 개념 문제 미보유!")
+
+        for i, p in enumerate(basic_d2, 1):
+            title = "_".join(p.split("_")[2:])
+            print(f"     [Lv.2 기초] {p} ({title})")
+
+        print("  2. D3 실전 응용 레벨 (20인 실생활 스토리텔링):")
+        for p in diffs["D3"][:3]:
+            print(f"     [Lv.3 응용] {p}")
+        if len(diffs["D3"]) > 3:
+            print(f"     ... 외 {len(diffs['D3']) - 3}문제")
+
+        print("  3. D4 심화 레벨 (복합 제약 및 최적화):")
+        for p in diffs["D4"][:3]:
+            print(f"     [Lv.4 심화] {p}")
+        if len(diffs["D4"]) > 3:
+            print(f"     ... 외 {len(diffs['D4']) - 3}문제")
+
+        if diffs["D5"]:
+            print("  4. D5 B형 Pro 레벨 (No-STL/Zero-GC/메모리풀):")
+            for p in diffs["D5"]:
+                print(f"     [Lv.5 Pro]  {p}")
+
+        # 편차 진단 코멘트
+        if c_d2 >= 5 and c_d3 >= 5 and c_d4 >= 5 and concept_probs:
+            print("  ✅ [편차 진단]: D2 뼈대부터 D4 심화까지 완만한 4~5단계 계단식 난이도 구축 완료.")
+        else:
+            print("  ⚠️ [편차 진단]: 계단 연결용 징검다리 문제 보충 권장.")
+
+    print("\n" + "=" * 80)
+
 
 # ---------------------------------------------------------------------------
 # [기능 2] 문제 내용 품질 검사 (Inspect Content)
@@ -308,6 +374,9 @@ def main():
 
     subparsers.add_parser("audit", help="주제별/난이도별 분포 감사 및 편향/결핍 진단")
     
+    ladder_p = subparsers.add_parser("ladder", help="주제별 계단식 난이도 편차 및 징검다리 구조 진단")
+    ladder_p.add_argument("topic", nargs="?", default=None, help="진단할 특정 주제명 (생략 시 전체)")
+
     test_p = subparsers.add_parser("verify", help="문제 채점 및 검증")
     test_p.add_argument("target", nargs="?", default="--all", help="검증 대상 문제 디렉토리명 또는 --all")
     test_p.add_argument("-v", "--verbose", action="store_true", help="상세 출력")
@@ -319,6 +388,8 @@ def main():
 
     if args.command == "audit":
         audit_distribution()
+    elif args.command == "ladder":
+        audit_ladder(args.topic)
     elif args.command == "verify":
         if args.target == "--all":
             verify_all()

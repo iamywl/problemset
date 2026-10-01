@@ -209,10 +209,11 @@ for (int i = 0; i < n; i++) {
 저장소에는 문제를 관리하고 품질을 유지하기 위한 두 개의 핵심 도구가 탑재되어 있습니다:
 
 ### 1) 실시간 품질 감사 에이전트 ([`qa_agent.py`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/qa_agent.py))
-- `python qa_agent.py audit` : 31개 전체 주제에 대해 D2/D3/D4 각 3문제 충족 여부 및 `[주제]에 대해서` 개념 예제 보유 여부를 전수 감사
+- `python qa_agent.py audit` : 31개 전체 주제에 대해 D2/D3/D4 각 5문제 충족 여부 및 `[주제]에 대해서` 개념 예제 보유 여부를 전수 감사
+- `python qa_agent.py ladder [주제]` : 각 주제별 4~5단계 계단식(Ladder) 난이도 편차 및 징검다리 구성 상태 정밀 진단
 - `python qa_agent.py verify --all` : 전체 문제의 6종 파일 규격, Java 8 컴파일, 12개 테스트케이스 채점 및 통과 여부 검증
 - `python qa_agent.py inspect [폴더명]` : `문제.txt` 본문의 개념 설명, 20인 아이 이름 스토리텔링, 복합 제약조건 수록 여부 정밀 검사
 
 ### 2) 총괄 문제 관리 에이전트 ([`agent.py`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/agent.py))
 - `python agent.py list` : 전체 문제 목록 및 파일 상태 조회
-- `python agent.py spec` : 최신 사용자 요구사항 명세서 출력
+- `python agent.py spec` : 최신 사용자 요구사항 명세서 출력 (D2 계단식 난이도 조절 및 자율 증설 표준 반영)
