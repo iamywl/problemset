@@ -1,0 +1,15 @@
+2
+7
+TYPE a
+TYPE b
+LEFT
+TYPE c
+RIGHT
+TYPE d
+DELETE
+5
+TYPE h
+TYPE e
+TYPE l
+TYPE l
+TYPE o
