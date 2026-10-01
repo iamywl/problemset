@@ -1,0 +1,2 @@
+#1 ABBABBABB
+#2 ABABC
