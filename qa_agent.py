@@ -18,6 +18,12 @@ import subprocess
 import argparse
 from collections import defaultdict
 
+if sys.platform == "win32":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 REQUIRED_FILES = [
@@ -65,7 +71,7 @@ def audit_distribution():
     print("=" * 80)
     print(f" 총 문제 수: {len(dirs)}개 (총 {len(topic_data)}개 주제)")
     print("-" * 80)
-    print(f"{'주제 (Topic)':<18} | {'D2':>4} | {'D3':>4} | {'D4':>4} | {'D5':>4} | {'합계':>5} | {'D2개념':>7} | {'상태(>=3)':>9}")
+    print(f"{'주제 (Topic)':<18} | {'D2':>4} | {'D3':>4} | {'D4':>4} | {'D5':>4} | {'합계':>5} | {'D2개념':>7} | {'상태(>=5)':>9}")
     print("-" * 80)
 
     deficient_topics = []
@@ -90,8 +96,8 @@ def audit_distribution():
             total_concept_d2 += 1
         concept_str = "✅ 보유" if has_concept else "❌ 미보유"
 
-        # D2, D3, D4 각각 3문제 이상 충족 여부
-        is_balanced = (c_d2 >= 3 and c_d3 >= 3 and c_d4 >= 3)
+        # D2, D3, D4 각각 5문제 이상 충족 여부
+        is_balanced = (c_d2 >= 5 and c_d3 >= 5 and c_d4 >= 5 and has_concept)
         status_str = "✅ 균형" if is_balanced else "⚠️ 부족"
 
         if not is_balanced:
@@ -100,9 +106,9 @@ def audit_distribution():
                 "D2": c_d2,
                 "D3": c_d3,
                 "D4": c_d4,
-                "need_d2": max(0, 3 - c_d2),
-                "need_d3": max(0, 3 - c_d3),
-                "need_d4": max(0, 3 - c_d4),
+                "need_d2": max(0, 5 - c_d2),
+                "need_d3": max(0, 5 - c_d3),
+                "need_d4": max(0, 5 - c_d4),
                 "need_concept": not has_concept
             })
 
@@ -120,7 +126,7 @@ def audit_distribution():
     print(f" - 상위 3대 주제 점유율: {top3_ratio:.1f}% ({top3_count}/{len(dirs)}문제)")
     print(f" - 최다 편중 주제: 1위 [{sorted_by_count[0][0]}] ({sum(len(v) for v in sorted_by_count[0][1].values())}문제), 2위 [{sorted_by_count[1][0]}] ({sum(len(v) for v in sorted_by_count[1][1].values())}문제)")
 
-    print("\n⚠️ [규격 미달 및 보충 필요 영역 리포트 (D2/D3/D4 각 3문제 이상 & D2 개념 필수)]")
+    print("\n⚠️ [규격 미달 및 보충 필요 영역 리포트 (D2/D3/D4 각 5문제 이상 & D2 개념 필수)]")
     for item in deficient_topics:
         needs = []
         if item["need_d2"] > 0: needs.append(f"D2 +{item['need_d2']}문제")
