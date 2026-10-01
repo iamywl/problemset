@@ -161,42 +161,51 @@ def audit_ladder(target_topic=None):
         c_d5 = len(diffs["D5"])
         tot = c_d2 + c_d3 + c_d4 + c_d5
 
-        # D2 개념 뼈대 문제
+        # D2 세부 인지 사다리(Micro-Ladder) 분류
         concept_probs = [d for d in diffs["D2"] if "에_대해서" in d or "에대해서" in d]
-        basic_d2 = [d for d in diffs["D2"] if d not in concept_probs]
+        step1_probs = [d for d in diffs["D2"] if any(k in d for k in ["UP_DOWN", "단순_부모", "1차원_배열_반으로", "원리", "직관", "기본기"])]
+        step2_probs = [d for d in diffs["D2"] if any(k in d for k in ["단계수", "2등분_원소_합", "루트_노드_직접", "기본", "카운팅", "탐색기"]) and d not in step1_probs and d not in concept_probs]
+        buffer_probs = [d for d in diffs["D2"] if d not in concept_probs and d not in step1_probs and d not in step2_probs]
 
         print(f"\n📂 [{topic}] (총 {tot}문제: D2:{c_d2}, D3:{c_d3}, D4:{c_d4}, D5:{c_d5})")
-        print("  1. D2 기초 레벨 (개념 뼈대 & 직관적 기초):")
+        print("  1. D2 기초 레벨 (5단계 미세 사다리 & 징검다리):")
+        if step1_probs:
+            for p in step1_probs:
+                print(f"     [Lv.1 직관/1회판정] {p} (루프 없이 1회 판정/직접 조회)")
+        if step2_probs:
+            for p in step2_probs:
+                print(f"     [Lv.2 단일루프/추적] {p} (기초 제어 및 단계 추적)")
         if concept_probs:
             for p in concept_probs:
-                print(f"     [Lv.1 뼈대] {p} (동작원리/Trace/기본구현)")
+                print(f"     [Lv.3 개념 뼈대 완결] {p} (동작원리/Trace/기본구현)")
         else:
-            print("     ⚠️ [Lv.1 뼈대] '...에_대해서' 개념 문제 미보유!")
-
-        for i, p in enumerate(basic_d2, 1):
-            title = "_".join(p.split("_")[2:])
-            print(f"     [Lv.2 기초] {p} ({title})")
+            print("     ⚠️ [Lv.3 개념 뼈대] '...에_대해서' 개념 문제 미보유!")
+        if buffer_probs:
+            for p in buffer_probs:
+                print(f"     [Lv.4 경계완충/징검] {p} (D3 도약 전 경계/다중조건 완충)")
 
         print("  2. D3 실전 응용 레벨 (20인 실생활 스토리텔링):")
         for p in diffs["D3"][:3]:
-            print(f"     [Lv.3 응용] {p}")
+            print(f"     [Lv.5 실전 응용] {p}")
         if len(diffs["D3"]) > 3:
             print(f"     ... 외 {len(diffs['D3']) - 3}문제")
 
         print("  3. D4 심화 레벨 (복합 제약 및 최적화):")
         for p in diffs["D4"][:3]:
-            print(f"     [Lv.4 심화] {p}")
+            print(f"     [Lv.6 심화 최적화] {p}")
         if len(diffs["D4"]) > 3:
             print(f"     ... 외 {len(diffs['D4']) - 3}문제")
 
         if diffs["D5"]:
             print("  4. D5 B형 Pro 레벨 (No-STL/Zero-GC/메모리풀):")
             for p in diffs["D5"]:
-                print(f"     [Lv.5 Pro]  {p}")
+                print(f"     [Lv.7 Pro 설계]   {p}")
 
         # 편차 진단 코멘트
-        if c_d2 >= 5 and c_d3 >= 5 and c_d4 >= 5 and concept_probs:
-            print("  ✅ [편차 진단]: D2 뼈대부터 D4 심화까지 완만한 4~5단계 계단식 난이도 구축 완료.")
+        if c_d2 >= 7:
+            print("  🎯 [편차 진단]: D2 내부 징검다리(7문제 이상) 완비로 난이도 급상승 완전 해소!")
+        elif c_d2 >= 5 and c_d3 >= 5 and c_d4 >= 5 and concept_probs:
+            print("  ✅ [편차 진단]: D2 뼈대부터 D4 심화까지 완만한 계단식 난이도 구축 완료.")
         else:
             print("  ⚠️ [편차 진단]: 계단 연결용 징검다리 문제 보충 권장.")
 
