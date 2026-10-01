@@ -1,0 +1,2 @@
+#1 CYCLE
+#2 NO_CYCLE
