@@ -1,0 +1,91 @@
+10
+10
+offer 1
+offer 2
+offer 3
+front
+back
+poll
+front
+poll
+poll
+empty
+5
+size
+empty
+front
+back
+poll
+10
+offer 100
+size
+front
+back
+offer 200
+size
+front
+back
+poll
+poll
+5
+offer 42
+empty
+poll
+empty
+size
+10
+offer 7
+offer 8
+poll
+size
+offer 9
+front
+back
+poll
+poll
+poll
+6
+offer 1
+poll
+offer 2
+poll
+offer 3
+poll
+10
+offer 10
+offer 20
+size
+empty
+front
+back
+poll
+back
+poll
+empty
+7
+front
+poll
+offer 99
+front
+back
+poll
+back
+8
+offer 50
+offer 40
+offer 30
+size
+poll
+poll
+poll
+size
+9
+offer 11
+offer 22
+front
+poll
+offer 33
+back
+poll
+poll
+poll

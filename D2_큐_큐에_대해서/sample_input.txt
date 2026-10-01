@@ -1,0 +1,20 @@
+2
+9
+offer 10
+offer 20
+front
+back
+poll
+size
+empty
+poll
+poll
+8
+poll
+front
+back
+offer 5
+empty
+size
+front
+poll
