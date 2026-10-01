@@ -1,0 +1,340 @@
+10
+40
+push_back 26
+size
+pop_back
+pop_back
+pop_front
+push_back 693
+push_back 605
+front
+push_front 31
+push_back 224
+pop_back
+push_front 575
+pop_back
+front
+pop_back
+back
+size
+push_front 778
+pop_front
+front
+empty
+size
+pop_front
+pop_back
+empty
+push_back 95
+front
+push_back 368
+empty
+size
+push_front 748
+back
+push_back 997
+front
+push_back 566
+size
+empty
+pop_back
+push_back 47
+pop_back
+44
+size
+push_back 876
+pop_back
+push_back 390
+size
+back
+empty
+pop_front
+empty
+empty
+pop_back
+size
+push_back 624
+pop_front
+pop_back
+pop_front
+back
+front
+size
+pop_back
+empty
+push_front 235
+push_front 825
+empty
+front
+size
+push_back 217
+empty
+pop_back
+back
+front
+back
+pop_front
+size
+pop_front
+pop_back
+size
+front
+front
+empty
+pop_back
+pop_front
+back
+push_back 774
+21
+push_back 157
+pop_front
+front
+push_back 395
+front
+back
+size
+push_front 697
+push_back 699
+size
+empty
+push_back 301
+front
+pop_front
+back
+push_front 977
+size
+pop_front
+push_back 892
+size
+pop_back
+24
+empty
+pop_front
+push_front 614
+empty
+back
+push_front 115
+empty
+size
+pop_back
+push_front 247
+push_back 88
+back
+push_back 779
+pop_front
+pop_front
+back
+pop_front
+size
+front
+pop_back
+pop_back
+size
+front
+empty
+34
+back
+push_back 254
+pop_back
+push_back 347
+push_front 603
+pop_back
+pop_back
+push_front 73
+push_front 235
+push_back 928
+push_front 881
+empty
+push_back 527
+pop_back
+size
+back
+pop_back
+pop_front
+back
+pop_back
+back
+front
+pop_back
+push_back 100
+front
+empty
+front
+front
+back
+push_front 690
+push_back 63
+front
+empty
+push_back 255
+26
+pop_back
+back
+pop_front
+front
+pop_front
+size
+back
+pop_back
+push_back 454
+push_back 52
+push_front 993
+push_back 949
+pop_back
+pop_front
+front
+back
+back
+pop_back
+front
+push_front 169
+front
+push_front 400
+size
+back
+size
+front
+42
+back
+pop_front
+pop_back
+size
+pop_back
+push_front 594
+push_front 766
+empty
+push_front 52
+back
+pop_front
+push_front 984
+push_back 872
+pop_front
+push_back 610
+push_back 692
+pop_back
+front
+push_back 965
+pop_back
+push_front 635
+push_back 430
+empty
+size
+pop_back
+empty
+pop_back
+size
+front
+pop_front
+size
+back
+empty
+push_back 10
+back
+push_back 76
+pop_back
+size
+pop_front
+empty
+push_back 901
+pop_back
+31
+size
+pop_front
+back
+size
+push_front 684
+size
+push_back 962
+pop_front
+size
+push_back 912
+push_back 761
+pop_front
+size
+size
+pop_back
+empty
+pop_back
+size
+back
+size
+push_front 95
+front
+size
+push_front 4
+empty
+pop_front
+size
+pop_front
+back
+front
+push_front 115
+22
+pop_front
+push_front 855
+empty
+pop_front
+front
+pop_front
+push_front 316
+empty
+push_front 921
+empty
+pop_back
+pop_back
+push_back 363
+front
+pop_front
+pop_back
+pop_front
+pop_front
+front
+push_front 184
+empty
+front
+45
+pop_back
+size
+pop_front
+push_back 392
+push_front 880
+back
+pop_back
+pop_back
+back
+empty
+size
+pop_back
+pop_back
+push_front 676
+pop_back
+front
+empty
+size
+push_back 991
+size
+empty
+front
+empty
+push_front 119
+size
+pop_front
+size
+push_front 112
+front
+empty
+empty
+front
+push_back 395
+pop_back
+size
+push_front 726
+front
+push_front 533
+pop_back
+empty
+front
+push_back 972
+empty
+empty
+push_back 738
