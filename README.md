@@ -26,7 +26,7 @@
      - [Step 1 직관/1회판정] -> [Step 2 단일루프/추적] -> [Step 3 단일예외] -> [Step 4 개념뼈대(`...에 대해서`)] -> [Step 5 경계완충/징검]
      - 특히 이진탐색, 분할정복, 서로소집합, 슬라이딩윈도우(SWEA 25985 변형 신규 문제 포함) 등 주요 주제의 난이도 편차를 완전히 해소.
    - **D3 (응용 및 실생활 스토리텔링 - 114문제)**: 사용자 지정 한국 아이 대표 이름 20인(남자: 이준, 도윤, 하준, 시우, 서준, 은우, 유준, 선우, 로운, 도하 / 여자: 이서, 서아, 아윤, 지아, 하윤, 서윤, 시아, 아린, 나은, 유주)을 활용한 생생한 실생활 스토리텔링 응용 문제.
-   - **D4 (심화 및 복합 제약 - 116문제)**: 2~3개 이상의 까다로운 복합 제약조건과 최적화($O(N)$ 모노톤, 비트마스크, 매개변수 탐색 등)가 유기적으로 결합된 고난도 문제.
+   - **D4 (심화 및 복합 제약 - 116문제)**: 2~3개 이상의 까다로운 복합 제약조건과 최적화(O(N) 모노톤, 비트마스크, 매개변수 탐색 등)가 유기적으로 결합된 고난도 문제.
    - **D5 (삼성 SW 역량테스트 Professional / B형 - 8문제)**: 대규모 데이터, 비트마스킹 DP, 롤백(Undo) 유니온파인드, K번째 최단경로, No-STL 커스텀 자료구조 등 고도의 최적화 알고리즘 문제.
 
 4. **품질 보증 에이전트(qa_agent.py) 및 실시간 업로드 관리**:
@@ -86,7 +86,7 @@ flowchart TD
 - [`D3_큐_암호생성기_회전`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_큐_암호생성기_회전)
 - [`D3_큐_도윤이의_프린터_대기열`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_큐_도윤이의_프린터_대기열)
 - [`D3_큐_지아의_은행_창구_시뮬레이션`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_큐_지아의_은행_창구_시뮬레이션)
-- [`D4_큐_트럭의_다리_건너기`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_큐_트럭의_다리_건너기)
+- [`D4_큐_우선순위큐_중앙값_실시간_추적`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_큐_우선순위큐_중앙값_실시간_추적)
 - [`D4_큐_멀티태스킹_CPU_라운드로빈`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_큐_멀티태스킹_CPU_라운드로빈)
 - [`D4_큐_슬라이딩윈도우_덱_최솟값`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_큐_슬라이딩윈도우_덱_최솟값) *(모노톤 덱)*
 - [`D3_덱_풍선_터뜨리기`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_덱_풍선_터뜨리기)
@@ -118,7 +118,7 @@ flowchart TD
 - [`D3_순열_사전순_다음_순열`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_순열_사전순_다음_순열)
 - [`D3_순열_원형_테이블_좌석_배치`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_순열_원형_테이블_좌석_배치)
 - [`D4_순열_과일트럭_최단배달`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_순열_과일트럭_최단배달)
-- [`D4_순열_부등호_수열_생성`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_순열_부등호_수열_생성)
+- [`D4_순열_N자리_순열_사전순_K번째_복원`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_순열_N자리_순열_사전순_K번째_복원)
 - [`D4_순열_작업_공정_최적순서`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_순열_작업_공정_최적순서)
 
 #### 2. 조합 (Combination)
@@ -131,7 +131,7 @@ flowchart TD
 - [`D3_조합_로또_행운의_조합`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_조합_로또_행운의_조합)
 - [`D4_조합_감시카메라_배치`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_조합_감시카메라_배치)
 - [`D4_조합_과수원_스프링클러_설치`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_조합_과수원_스프링클러_설치)
-- [`D4_조합_치킨거리_최소화`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_조합_치킨거리_최소화)
+- [`D4_조합_도심_스프링클러_최적_감시_배치`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_조합_도심_스프링클러_최적_감시_배치)
 
 #### 3. 부분집합 & 비트마스킹 (Subset & Bitmask)
 > **추천 연계**: SWEA 2817(부분 수열의 합), 백준 1182(부분수열의 합), 백준 10971(외판원 순회 2)
@@ -227,7 +227,7 @@ flowchart TD
 > **추천 연계**: SWEA 1267(작업순서), 백준 2252(줄 세우기), 백준 1005(ACM Craft)
 - [`D2_위상정렬_작업_순서_결정`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D2_위상정렬_작업_순서_결정)
 - [`D3_위상정렬_도하의_선수과목_체계`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_위상정렬_도하의_선수과목_체계)
-- [`D4_위상정렬_임계경로_작업_스케줄러`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_위상정렬_임계경로_작업_스케줄러)
+- [`D4_위상정렬_사전순_가장_앞선_위상정렬`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_위상정렬_사전순_가장_앞선_위상정렬)
 
 #### 4. 서로소 집합 (Union-Find) & 최소 신장 트리 (MST)
 > **추천 연계**: SWEA 3289(서로소 집합), 백준 1717(집합의 표현), SWEA 3124(최소 스패닝 트리), 백준 1197(MST)
@@ -247,7 +247,7 @@ flowchart TD
 - [`D2_최단경로_플로이드워셜_기초`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D2_최단경로_플로이드워셜_기초)
 - [`D3_최단경로_나은이의_지하철_환승_여행`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_최단경로_나은이의_지하철_환승_여행)
 - [`D3_최단경로_하윤이의_키_순서_비교`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D3_최단경로_하윤이의_키_순서_비교)
-- [`D4_최단경로_벨만포드_타임머신_탐색`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_최단경로_벨만포드_타임머신_탐색)
+- [`D4_최단경로_다익스트라_최단경로_역추적_복원`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_최단경로_다익스트라_최단경로_역추적_복원)
 - [`D4_최단경로_특정_경유지_왕복_다익스트라`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_최단경로_특정_경유지_왕복_다익스트라)
 - [`D4_그래프_강결합_컴포넌트_타잔`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_그래프_강결합_컴포넌트_타잔)
 - [`D4_네트워크유량_에드몬드카프_최대유량`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_네트워크유량_에드몬드카프_최대유량)
@@ -271,7 +271,7 @@ flowchart TD
 
 #### 2. 최장 증가 부분 수열 (LIS)
 > **추천 연계**: SWEA 3307(최장 증가 부분 수열), 백준 11053(LIS), 백준 12015(LIS 2 O(N log N))
-- [`D4_DP_최장_증가_부분수열_LIS`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_DP_최장_증가_부분수열_LIS)
+- [`D4_DP_파일_합치기_최소_비용`](file:///c:/Users/SSAFY/Desktop/SWEAProblemSet/D4_DP_파일_합치기_최소_비용)
 
 #### 3. 문자열 알고리즘 (KMP / Trie)
 > **추천 연계**: 백준 16916(부분 문자열 - KMP), 백준 5052(전화번호 목록 - Trie)

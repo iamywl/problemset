@@ -236,6 +236,8 @@ def audit_ladder(target_topic=None):
 # ---------------------------------------------------------------------------
 # [기능 2] 문제 내용 품질 검사 (Inspect Content)
 # ---------------------------------------------------------------------------
+LATEX_COMMANDS = [r"\times", r"\le", r"\ge", r"\log", r"\cdot", r"\sum", r"\text{", r"\frac", r"\sqrt", r"\in", r"\neq"]
+
 def inspect_problem_content(prob_dir_name):
     prob_dir = resolve_problem_path(prob_dir_name)
     if not prob_dir or not os.path.isdir(prob_dir):
@@ -251,6 +253,40 @@ def inspect_problem_content(prob_dir_name):
     diff = parts[0]
     issues = []
 
+    # 1. 수식 표현 금지 검사 (자연스러운 한국어/일반 텍스트 필수)
+    if "$" in content:
+        issues.append("수식 기호($/LaTeX) 사용 금지 위반")
+    if any(cmd in content for cmd in LATEX_COMMANDS):
+        issues.append("LaTeX 수식 명령어 사용 금지 위반")
+
+    # 2. 다이어그램 및 이미지 검사 (순수 텍스트/ASCII 아트 필수)
+    if "![" in content or "<img" in content:
+        issues.append("외부 이미지 링크 금지 (순수 텍스트/ASCII 아트 필수)")
+
+    # 3. 필수 섹션 존재 여부 검사
+    if "[제약 사항" not in content:
+        issues.append("제약 사항 섹션 누락")
+    if "[입력" not in content:
+        issues.append("입력 섹션 누락")
+    if "[출력" not in content:
+        issues.append("출력 섹션 누락")
+
+    # 4. 문단 분리 및 빈 줄 구분 검사
+    lines = content.splitlines()
+    for i, line in enumerate(lines):
+        line_s = line.strip()
+        if any(line_s.startswith(hdr) for hdr in ["[제약 사항", "[입력", "[출력"]):
+            if i > 0 and lines[i - 1].strip() != "":
+                issues.append(f"문단 구분 미흡 ({line_s} 직전문단과 빈 줄 분리 필요)")
+
+    # 5. 첫 줄 난이도 태그 일치 검사
+    if lines:
+        import re
+        m = re.search(r"\((D[1-5])\)", lines[0])
+        if m and m.group(1) != diff:
+            issues.append(f"난이도 표기 불일치 (폴더: {diff}, 본문: {m.group(1)})")
+
+    # 6. 난이도별 세부 내용 품질 검사
     if diff == "D2":
         # 개념 설명, 예시, 동작 원리 확인
         keywords = ["개념", "원리", "설명", "동작", "예시", "Trace"]
@@ -274,6 +310,30 @@ def inspect_problem_content(prob_dir_name):
     if issues:
         return False, "; ".join(issues)
     return True, "품질 통과"
+
+def inspect_all():
+    dirs = get_all_problem_dirs()
+    print("\n" + "=" * 80)
+    print(f" 📝 [QA Agent] 전체 {len(dirs)}개 문제 텍스트 품질 일괄 정밀 검사")
+    print("=" * 80)
+    pass_cnt = 0
+    fail_cnt = 0
+    issues_list = []
+    for i, d in enumerate(dirs, 1):
+        ok, msg = inspect_problem_content(d)
+        if ok:
+            pass_cnt += 1
+        else:
+            fail_cnt += 1
+            issues_list.append((d, msg))
+            print(f"[{i:3d}/{len(dirs):3d}] {d:<45} | ⚠️ {msg}")
+
+    print("-" * 80)
+    print(f" [검사 결과] 총 {len(dirs)}문제 중 통과: {pass_cnt}개, 보완 필요: {fail_cnt}개")
+    if not issues_list:
+        print(" 🎉 모든 문제가 수식 배제, 아스키 다이어그램, 정갈한 문단 분리 품질 요건을 100% 충족합니다!")
+    print("=" * 80)
+
 
 # ---------------------------------------------------------------------------
 # [기능 3] 개별 문제 검증 및 채점 (Verify Single Problem)
@@ -538,11 +598,13 @@ def main():
     ladder_p.add_argument("topic", nargs="?", default=None, help="진단할 특정 주제명 (생략 시 전체)")
 
     test_p = subparsers.add_parser("verify", help="문제 채점 및 검증")
-    test_p.add_argument("target", nargs="?", default="--all", help="검증 대상 문제 디렉토리명 또는 --all")
+    test_p.add_argument("target", nargs="?", default=None, help="검증 대상 문제 디렉토리명")
+    test_p.add_argument("--all", action="store_true", help="전체 문제 일괄 검증")
     test_p.add_argument("-v", "--verbose", action="store_true", help="상세 출력")
 
     inspect_p = subparsers.add_parser("inspect", help="문제 텍스트 품질 검사")
-    inspect_p.add_argument("target", help="검사 대상 문제 디렉토리명")
+    inspect_p.add_argument("target", nargs="?", default=None, help="검사 대상 문제 디렉토리명")
+    inspect_p.add_argument("--all", action="store_true", help="전체 문제 일괄 텍스트 품질 검사")
 
     upload_p = subparsers.add_parser("upload", help="358문항 업로드 현황 조회 및 마킹")
     upload_p.add_argument("--mark", nargs=2, metavar=("TARGET", "STATUS"), help="특정 문제의 업로드 상태 변경 (예: --mark 슬라이딩윈도우_뒤집기 완료)")
@@ -557,14 +619,17 @@ def main():
     elif args.command == "ladder":
         audit_ladder(args.topic)
     elif args.command == "verify":
-        if args.target == "--all":
+        if args.all or args.target == "--all" or args.target is None:
             verify_all()
         else:
             ok, msg = verify_problem(args.target, verbose=True)
             print(f"결과: {'✅ PASS' if ok else '❌ FAIL'} - {msg}")
     elif args.command == "inspect":
-        ok, msg = inspect_problem_content(args.target)
-        print(f"[{args.target}] 내용 품질: {'✅ 통과' if ok else '⚠️ 보완 필요'} ({msg})")
+        if args.all or args.target == "--all" or args.target is None:
+            inspect_all()
+        else:
+            ok, msg = inspect_problem_content(args.target)
+            print(f"[{args.target}] 내용 품질: {'✅ 통과' if ok else '⚠️ 보완 필요'} ({msg})")
     elif args.command == "upload":
         if args.mark:
             target, status = args.mark
